@@ -1,9 +1,8 @@
 package org.upe.interfaces;
 
-import org.upe.model.PlanoTreino;
-
 import java.util.List;
-import java.util.Optional;
+
+import org.upe.model.PlanoTreino;
 
 public interface PlanoDeTreinoInterface {
     PlanoTreino salvar(PlanoTreino planoTreino);

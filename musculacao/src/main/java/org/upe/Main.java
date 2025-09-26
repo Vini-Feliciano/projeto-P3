@@ -1,22 +1,33 @@
                                                                                                                                                                                                                                 package org.upe;
-import org.upe.model.Usuario;
-import org.upe.data.*;
-import org.upe.business.*;
-import org.upe.ui.*;
-import org.upe.util.*;
-
 import java.util.Scanner;
+
+import org.upe.business.ExercicioBusiness;
+import org.upe.business.IndicadorBiomedicoBusiness;
+import org.upe.business.PlanoDeTreinoBusiness;
+import org.upe.business.SecaoTreinoBusiness;
+import org.upe.business.UsuarioBusiness;
+import org.upe.data.ExercicioRepository;
+import org.upe.data.IndicadorBiomedicoRepository;
+import org.upe.data.PlanoDeTreinoRepository;
+import org.upe.data.SecaoDeTreinoRepository;
+import org.upe.data.UsuarioRepository;
+import org.upe.model.Usuario;
+import org.upe.ui.ExercicioUI;
+import org.upe.ui.IndicadorBiomedicoUI;
+import org.upe.ui.InputHandler;
+import org.upe.ui.PlanoTreinoUI;
+import org.upe.ui.SecaoTreinoUI;
+import org.upe.ui.UsuarioUI;
+import org.upe.util.PopulateExercicios;
 
 public class Main {
 
     private static UsuarioBusiness usuarioBusiness;
-    private static ExercicioBusiness exercicioBusiness;
     private static PlanoDeTreinoBusiness planoDeTreinoBusiness;
     private static SecaoTreinoBusiness secaoTreinoBusiness;
     private static IndicadorBiomedicoBusiness indicadorBiomedicoBusiness;
 
     private static Usuario usuarioLogado = null;
-    private static Scanner scanner;
     private static InputHandler inputHandler;
 
     private static UsuarioUI usuarioUI;
@@ -26,7 +37,7 @@ public class Main {
     private static IndicadorBiomedicoUI indicadorBiomedicoUI;
 
     public static void main(String[] args) {
-        scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         inputHandler = new InputHandler(scanner);
 
         // Manual Dependency Injection
@@ -37,7 +48,7 @@ public class Main {
         IndicadorBiomedicoRepository indicadorBiomedicoRepository = new IndicadorBiomedicoRepository();
     
         usuarioBusiness = new UsuarioBusiness(usuarioRepository);
-        exercicioBusiness = new ExercicioBusiness(exercicioRepository);
+        ExercicioBusiness exercicioBusiness = new ExercicioBusiness(exercicioRepository);
         planoDeTreinoBusiness = new PlanoDeTreinoBusiness(planoDeTreinoRepository);
         secaoTreinoBusiness = new SecaoTreinoBusiness(secaoTreinoRepository, exercicioRepository, planoDeTreinoRepository);
         indicadorBiomedicoBusiness = new IndicadorBiomedicoBusiness(indicadorBiomedicoRepository);

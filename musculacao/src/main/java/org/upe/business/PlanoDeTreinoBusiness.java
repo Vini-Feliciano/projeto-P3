@@ -1,14 +1,13 @@
 package org.upe.business;
 
-import org.upe.model.PlanoTreino;
-import org.upe.interfaces.PlanoDeTreinoInterface;
-
 import java.util.List;
-import java.util.Optional;
+
+import org.upe.interfaces.PlanoDeTreinoInterface;
+import org.upe.model.PlanoTreino;
 
 public class PlanoDeTreinoBusiness {
-
-    private PlanoDeTreinoInterface planoDeTreinoInterface;
+    //tornei a interface final
+    private final PlanoDeTreinoInterface planoDeTreinoInterface;
 
     public PlanoDeTreinoBusiness(PlanoDeTreinoInterface planoDeTreinoInterface) {
         this.planoDeTreinoInterface = planoDeTreinoInterface;

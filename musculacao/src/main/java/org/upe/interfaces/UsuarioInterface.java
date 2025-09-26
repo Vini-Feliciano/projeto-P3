@@ -1,7 +1,6 @@
 package org.upe.interfaces;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.upe.model.Usuario;
 

@@ -4,4 +4,7 @@
   <artifactId>musculacao</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>upe.br</name>
+  <properties>
+  <sonar.organization>vini-feliciano</sonar.organization>
+</properties>
 </project>

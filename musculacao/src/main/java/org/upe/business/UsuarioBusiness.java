@@ -1,10 +1,9 @@
 package org.upe.business;
 
-import org.upe.model.Usuario;
-import org.upe.interfaces.UsuarioInterface;
-
 import java.util.List;
-import java.util.Optional;
+
+import org.upe.interfaces.UsuarioInterface;
+import org.upe.model.Usuario;
 
 public class UsuarioBusiness {
 
