@@ -2,11 +2,11 @@ package org.upe.model;
 
 public class Usuario{
 
-    public long id;
-    public String nome;
-    public String email;
-    public String senha;
-    public boolean admin;
+    private long id;
+    private String nome;
+    private String email;
+    private final String senha;
+    private boolean admin;
 
     public Usuario(long id, String nome, String email, String senha, boolean admin){
         this.id = id;
