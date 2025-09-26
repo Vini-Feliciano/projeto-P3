@@ -36,6 +36,9 @@ public class Main {
     private static SecaoTreinoUI secaoTreinoUI;
     private static IndicadorBiomedicoUI indicadorBiomedicoUI;
     
+    private static final String ESCOLHA_OPCAO_MSG = "Escolha uma opção: ";
+    private static final String OPCAO_INVALIDA_MSG = "Opção inválida. Tente novamente.";
+
     public static void main(String[] args) {
         System.Logger logger = System.getLogger(Main.class.getName());
         Scanner scanner = new Scanner(System.in);
@@ -78,9 +81,8 @@ public class Main {
         while (true) {
             if (usuarioLogado == null) {
                 logger.log(System.Logger.Level.INFO, "--- Menu Principal ---");
-                logger.log(System.Logger.Level.INFO, "1. Login");
                 logger.log(System.Logger.Level.INFO, "0. Sair");
-                logger.log(System.Logger.Level.INFO, "Escolha uma opção: ");
+                logger.log(System.Logger.Level.INFO, ESCOLHA_OPCAO_MSG);
                 
                 int opcao = inputHandler.readIntInput();
 
@@ -92,7 +94,7 @@ public class Main {
                         logger.log(System.Logger.Level.INFO, "Saindo...");
                         return;
                     default:
-                        logger.log(System.Logger.Level.WARNING, "Opção inválida. Tente novamente.");
+                        logger.log(System.Logger.Level.WARNING, OPCAO_INVALIDA_MSG);
                 }
             } else {
                 secaoTreinoUI = new SecaoTreinoUI(secaoTreinoBusiness, planoDeTreinoBusiness, inputHandler, usuarioLogado.getId());
@@ -130,7 +132,7 @@ public class Main {
             logger.log(System.Logger.Level.INFO, "1. Gerenciar Usuários");
             logger.log(System.Logger.Level.INFO, "2. Gerenciar Exercícios");
             logger.log(System.Logger.Level.INFO, "0. Logout");
-            logger.log(System.Logger.Level.INFO, "Escolha uma opção: ");
+            logger.log(System.Logger.Level.INFO, ESCOLHA_OPCAO_MSG);
 
             int opcao = inputHandler.readIntInput();
 
@@ -146,7 +148,7 @@ public class Main {
                     logger.log(System.Logger.Level.INFO, "Logout realizado.");
                     return;
                 default:
-                    logger.log(System.Logger.Level.WARNING, "Opção inválida. Tente novamente.");
+                    logger.log(System.Logger.Level.WARNING, OPCAO_INVALIDA_MSG);
             }
         }
     }
@@ -159,7 +161,7 @@ public class Main {
             logger.log(System.Logger.Level.INFO, "2. Gerenciar Seções de Treino");
             logger.log(System.Logger.Level.INFO, "3. Gerenciar Indicadores Biomédicos");
             logger.log(System.Logger.Level.INFO, "0. Logout");
-            logger.log(System.Logger.Level.INFO, "Escolha uma opção: ");
+            logger.log(System.Logger.Level.INFO, ESCOLHA_OPCAO_MSG);
             int opcao = inputHandler.readIntInput();
 
             switch (opcao) {
@@ -177,7 +179,7 @@ public class Main {
                     logger.log(System.Logger.Level.INFO, "Logout realizado.");
                     return;
                 default:
-                    logger.log(System.Logger.Level.WARNING, "Opção inválida. Tente novamente.");
+                    logger.log(System.Logger.Level.WARNING, OPCAO_INVALIDA_MSG);
             }
         }
     }
