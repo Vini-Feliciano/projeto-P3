@@ -1,14 +1,14 @@
 package org.upe.business;
 
-import org.upe.model.Exercicio;
-import org.upe.interfaces.ExercicioInterface;
-
 import java.util.List;
-import java.util.Optional;
+
+import org.upe.interfaces.ExercicioInterface;
+import org.upe.model.Exercicio;
 
 public class ExercicioBusiness {
 
-    private ExercicioInterface exercicioInterface;
+    //Tornei a interface final
+    private final ExercicioInterface exercicioInterface;
 
     public ExercicioBusiness(ExercicioInterface exercicioInterface) {
         this.exercicioInterface = exercicioInterface;

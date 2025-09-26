@@ -1,21 +1,19 @@
 package org.upe.business;
 
-import org.upe.model.Exercicio;
-import org.upe.model.PlanoTreino;
-import org.upe.model.SecaoTreino;
+import java.util.List;
+
 import org.upe.interfaces.ExercicioInterface;
 import org.upe.interfaces.PlanoDeTreinoInterface;
 import org.upe.interfaces.SecaoDeTreinoInterface;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import org.upe.model.Exercicio;
+import org.upe.model.PlanoTreino;
+import org.upe.model.SecaoTreino;
 
 public class SecaoTreinoBusiness {
-
-    private SecaoDeTreinoInterface secaoTreinoInterface;
-    private ExercicioInterface exercicioInterface;
-    private PlanoDeTreinoInterface planoDeTreinoInterface;
+    //tornei as interfaces finais
+    private final SecaoDeTreinoInterface secaoTreinoInterface;
+    private final ExercicioInterface exercicioInterface;
+    private final PlanoDeTreinoInterface planoDeTreinoInterface;
 
     public SecaoTreinoBusiness(SecaoDeTreinoInterface secaoTreinoInterface, ExercicioInterface exercicioInterface, PlanoDeTreinoInterface planoDeTreinoInterface) {
         this.secaoTreinoInterface = secaoTreinoInterface;

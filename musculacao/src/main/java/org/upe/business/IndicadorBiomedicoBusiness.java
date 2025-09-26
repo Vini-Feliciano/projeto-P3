@@ -1,21 +1,20 @@
 package org.upe.business;
 
-import org.upe.model.IndicadorBiomedico;
-import org.upe.interfaces.IndicadorBiomedicoInterface;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.Arrays;
+import java.util.List;
+
+import org.upe.interfaces.IndicadorBiomedicoInterface;
+import org.upe.model.IndicadorBiomedico;
 
 public class IndicadorBiomedicoBusiness {
 
-    private IndicadorBiomedicoInterface indicadorBiomedicoInterface;
+    //tornei a interface final
+    private final IndicadorBiomedicoInterface indicadorBiomedicoInterface;
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
 
     public IndicadorBiomedicoBusiness(IndicadorBiomedicoInterface indicadorBiomedicoInterface) {
@@ -51,14 +50,14 @@ public class IndicadorBiomedicoBusiness {
 
         StringBuilder relatorio = new StringBuilder();
         relatorio.append("Relatório de Evolução de Indicadores Biomédicos (Período: ")
-              .append(startDate.format(DATE_FORMATTER)).append(" a ").append(endDate.format(DATE_FORMATTER)).append(")\n");
+              .append(startDate.format(DATE_FORMATTER)).append(" a ").append(endDate.format(DATE_FORMATTER)).append(")%n");
         relatorio.append("-----------------------------------------------------------------------------------------------------\n");
 
         IndicadorBiomedico primeiro = indicadores.get(0);
         IndicadorBiomedico ultimo = indicadores.get(indicadores.size() - 1);
-
-        relatorio.append(String.format("%-15s %-10s %-10s %-10s %-10s %-10s\n", "Indicador", "Inicial", "Final", "Diferença", "% "));
-        relatorio.append("-----------------------------------------------------------------------------------------------------\n");
+        // troquei o % por "Porcentagem" achando que resolveria o problema de argumentos insuficientes, mas não resolveu. Foi adicionado o "" no fim para tentar resolver
+        relatorio.append(String.format("%-15s %-10s %-10s %-10s %-10s %-10s%n", "Indicador", "Inicial", "Final", "Diferença", "Porcentagem ",""));
+        relatorio.append("-----------------------------------------------------------------------------------------------------%n");
 
         appendEvolution(relatorio, "Peso (kg)", primeiro.getPeso(), ultimo.getPeso());
         appendEvolution(relatorio, "Altura (m)", primeiro.getAltura(), ultimo.getAltura());
@@ -72,7 +71,7 @@ public class IndicadorBiomedicoBusiness {
     private void appendEvolution(StringBuilder relatorio, String label, double initial, double latest) {
         double difference = latest - initial;
         double percentage = (initial != 0) ? (difference / initial) * 100 : 0;
-        relatorio.append(String.format("%-15s %-10.2f %-10.2f %-10.2f %-9.2f%%\n", label, initial, latest, difference, percentage));
+        relatorio.append(String.format("%-15s %-10.2f %-10.2f %-10.2f %-9.2f%%n", label, initial, latest, difference, percentage));
     }
 
     public int importarIndicadoresCSV(long usuarioId, String filePath) throws IOException {

@@ -1,8 +1,5 @@
 package org.upe.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class PlanoTreino {
     private long id;
     private long exercicioId;

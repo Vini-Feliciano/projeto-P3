@@ -1,22 +1,33 @@
                                                                                                                                                                                                                                 package org.upe;
-import org.upe.model.Usuario;
-import org.upe.data.*;
-import org.upe.business.*;
-import org.upe.ui.*;
-import org.upe.util.*;
-
 import java.util.Scanner;
+
+import org.upe.business.ExercicioBusiness;
+import org.upe.business.IndicadorBiomedicoBusiness;
+import org.upe.business.PlanoDeTreinoBusiness;
+import org.upe.business.SecaoTreinoBusiness;
+import org.upe.business.UsuarioBusiness;
+import org.upe.data.ExercicioRepository;
+import org.upe.data.IndicadorBiomedicoRepository;
+import org.upe.data.PlanoDeTreinoRepository;
+import org.upe.data.SecaoDeTreinoRepository;
+import org.upe.data.UsuarioRepository;
+import org.upe.model.Usuario;
+import org.upe.ui.ExercicioUI;
+import org.upe.ui.IndicadorBiomedicoUI;
+import org.upe.ui.InputHandler;
+import org.upe.ui.PlanoTreinoUI;
+import org.upe.ui.SecaoTreinoUI;
+import org.upe.ui.UsuarioUI;
+import org.upe.util.PopulateExercicios;
 
 public class Main {
 
     private static UsuarioBusiness usuarioBusiness;
-    private static ExercicioBusiness exercicioBusiness;
     private static PlanoDeTreinoBusiness planoDeTreinoBusiness;
     private static SecaoTreinoBusiness secaoTreinoBusiness;
     private static IndicadorBiomedicoBusiness indicadorBiomedicoBusiness;
 
     private static Usuario usuarioLogado = null;
-    private static Scanner scanner;
     private static InputHandler inputHandler;
 
     private static UsuarioUI usuarioUI;
@@ -24,9 +35,13 @@ public class Main {
     private static PlanoTreinoUI planoDeTreinoUI;
     private static SecaoTreinoUI secaoTreinoUI;
     private static IndicadorBiomedicoUI indicadorBiomedicoUI;
+    
+    private static final String ESCOLHA_OPCAO_MSG = "Escolha uma opção: ";
+    private static final String OPCAO_INVALIDA_MSG = "Opção inválida. Tente novamente.";
 
     public static void main(String[] args) {
-        scanner = new Scanner(System.in);
+        System.Logger logger = System.getLogger(Main.class.getName());
+        Scanner scanner = new Scanner(System.in);
         inputHandler = new InputHandler(scanner);
 
         // Manual Dependency Injection
@@ -37,7 +52,7 @@ public class Main {
         IndicadorBiomedicoRepository indicadorBiomedicoRepository = new IndicadorBiomedicoRepository();
     
         usuarioBusiness = new UsuarioBusiness(usuarioRepository);
-        exercicioBusiness = new ExercicioBusiness(exercicioRepository);
+        ExercicioBusiness exercicioBusiness = new ExercicioBusiness(exercicioRepository);
         planoDeTreinoBusiness = new PlanoDeTreinoBusiness(planoDeTreinoRepository);
         secaoTreinoBusiness = new SecaoTreinoBusiness(secaoTreinoRepository, exercicioRepository, planoDeTreinoRepository);
         indicadorBiomedicoBusiness = new IndicadorBiomedicoBusiness(indicadorBiomedicoRepository);
@@ -49,9 +64,9 @@ public class Main {
         PopulateExercicios populateExercicios = new PopulateExercicios(exercicioBusiness);
 
         if (usuarioBusiness.listarTodosUsuarios().isEmpty()) {
-            System.out.println("Nenhum usuário encontrado. Criando usuário administrador inicial...");
+            logger.log(System.Logger.Level.INFO, "Nenhum usuário encontrado. Criando usuário administrador inicial...");
             usuarioBusiness.cadastrarUsuario("Admin", "admin", "admin123", true);
-            System.out.println("Usuário administrador 'admin' criado com sucesso. Senha: admin123");
+            logger.log(System.Logger.Level.INFO, "Usuário administrador 'admin' criado com sucesso. Senha: admin123");
         }
 
         if (exercicioBusiness.listarTodosExercicios().isEmpty()) {
@@ -62,12 +77,13 @@ public class Main {
     }
 
     private static void exibirMenuPrincipal() {
+        System.Logger logger = System.getLogger(Main.class.getName());
         while (true) {
             if (usuarioLogado == null) {
-                System.out.println("\n--- Menu Principal ---");
-                System.out.println("1. Login");
-                System.out.println("0. Sair");
-                System.out.print("Escolha uma opção: ");
+                logger.log(System.Logger.Level.INFO, "--- Menu Principal ---");
+                logger.log(System.Logger.Level.INFO, "0. Sair");
+                logger.log(System.Logger.Level.INFO, ESCOLHA_OPCAO_MSG);
+                
                 int opcao = inputHandler.readIntInput();
 
                 switch (opcao) {
@@ -75,10 +91,10 @@ public class Main {
                         fazerLogin();
                         break;
                     case 0:
-                        System.out.println("Saindo...");
+                        logger.log(System.Logger.Level.INFO, "Saindo...");
                         return;
                     default:
-                        System.out.println("Opção inválida. Tente novamente.");
+                        logger.log(System.Logger.Level.WARNING, OPCAO_INVALIDA_MSG);
                 }
             } else {
                 secaoTreinoUI = new SecaoTreinoUI(secaoTreinoBusiness, planoDeTreinoBusiness, inputHandler, usuarioLogado.getId());
@@ -94,27 +110,30 @@ public class Main {
     }
 
     private static void fazerLogin() {
-        System.out.print("Login: ");
+        System.Logger logger = System.getLogger(Main.class.getName());
+        logger.log(System.Logger.Level.INFO, "Login: ");
         String login = inputHandler.readLine();
-        System.out.print("Senha: ");
+        logger.log(System.Logger.Level.INFO, "Senha: ");
         String senha = inputHandler.readLine();
 
         Usuario usuario = usuarioBusiness.autenticarUsuario(login, senha);
         if (usuario != null) {
             usuarioLogado = usuario;
-            System.out.println("Login realizado com sucesso! Bem-vindo, " + usuarioLogado.getNome() + "!");
+            logger.log(System.Logger.Level.INFO, "Login realizado com sucesso! Bem-vindo, " + usuarioLogado.getNome() + "!");
         } else {
-            System.out.println("Login ou senha inválidos.");
+            logger.log(System.Logger.Level.WARNING, "Login ou senha inválidos.");
         }
     }
 
     private static void exibirMenuAdmin() {
+        System.Logger logger = System.getLogger(Main.class.getName());
         while (true) {
-            System.out.println("\n--- Menu Administrador ---");
-            System.out.println("1. Gerenciar Usuários");
-            System.out.println("2. Gerenciar Exercícios");
-            System.out.println("0. Logout");
-            System.out.print("Escolha uma opção: ");
+            logger.log(System.Logger.Level.INFO, "--- Menu Administrador ---");
+            logger.log(System.Logger.Level.INFO, "1. Gerenciar Usuários");
+            logger.log(System.Logger.Level.INFO, "2. Gerenciar Exercícios");
+            logger.log(System.Logger.Level.INFO, "0. Logout");
+            logger.log(System.Logger.Level.INFO, ESCOLHA_OPCAO_MSG);
+
             int opcao = inputHandler.readIntInput();
 
             switch (opcao) {
@@ -126,22 +145,23 @@ public class Main {
                     break;
                 case 0:
                     usuarioLogado = null;
-                    System.out.println("Logout realizado.");
+                    logger.log(System.Logger.Level.INFO, "Logout realizado.");
                     return;
                 default:
-                    System.out.println("Opção inválida. Tente novamente.");
+                    logger.log(System.Logger.Level.WARNING, OPCAO_INVALIDA_MSG);
             }
         }
     }
 
     private static void exibirMenuUsuario() {
+        System.Logger logger = System.getLogger(Main.class.getName());
         while (true) {
-            System.out.println("\n--- Menu Usuário ---");
-            System.out.println("1. Gerenciar Planos de Treino");
-            System.out.println("2. Gerenciar Seções de Treino");
-            System.out.println("3. Gerenciar Indicadores Biomédicos");
-            System.out.println("0. Logout");
-            System.out.print("Escolha uma opção: ");
+            logger.log(System.Logger.Level.INFO, "--- Menu Usuário ---");
+            logger.log(System.Logger.Level.INFO, "1. Gerenciar Planos de Treino");
+            logger.log(System.Logger.Level.INFO, "2. Gerenciar Seções de Treino");
+            logger.log(System.Logger.Level.INFO, "3. Gerenciar Indicadores Biomédicos");
+            logger.log(System.Logger.Level.INFO, "0. Logout");
+            logger.log(System.Logger.Level.INFO, ESCOLHA_OPCAO_MSG);
             int opcao = inputHandler.readIntInput();
 
             switch (opcao) {
@@ -156,10 +176,10 @@ public class Main {
                     break;
                 case 0:
                     usuarioLogado = null;
-                    System.out.println("Logout realizado.");
+                    logger.log(System.Logger.Level.INFO, "Logout realizado.");
                     return;
                 default:
-                    System.out.println("Opção inválida. Tente novamente.");
+                    logger.log(System.Logger.Level.WARNING, OPCAO_INVALIDA_MSG);
             }
         }
     }
