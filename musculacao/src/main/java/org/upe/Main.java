@@ -35,8 +35,9 @@ public class Main {
     private static PlanoTreinoUI planoDeTreinoUI;
     private static SecaoTreinoUI secaoTreinoUI;
     private static IndicadorBiomedicoUI indicadorBiomedicoUI;
-
+    
     public static void main(String[] args) {
+        System.Logger logger = System.getLogger(Main.class.getName());
         Scanner scanner = new Scanner(System.in);
         inputHandler = new InputHandler(scanner);
 
@@ -60,9 +61,9 @@ public class Main {
         PopulateExercicios populateExercicios = new PopulateExercicios(exercicioBusiness);
 
         if (usuarioBusiness.listarTodosUsuarios().isEmpty()) {
-            System.out.println("Nenhum usuário encontrado. Criando usuário administrador inicial...");
+            logger.log(System.Logger.Level.INFO, "Nenhum usuário encontrado. Criando usuário administrador inicial...");
             usuarioBusiness.cadastrarUsuario("Admin", "admin", "admin123", true);
-            System.out.println("Usuário administrador 'admin' criado com sucesso. Senha: admin123");
+            logger.log(System.Logger.Level.INFO, "Usuário administrador 'admin' criado com sucesso. Senha: admin123");
         }
 
         if (exercicioBusiness.listarTodosExercicios().isEmpty()) {
@@ -73,12 +74,14 @@ public class Main {
     }
 
     private static void exibirMenuPrincipal() {
+        System.Logger logger = System.getLogger(Main.class.getName());
         while (true) {
             if (usuarioLogado == null) {
-                System.out.println("\n--- Menu Principal ---");
-                System.out.println("1. Login");
-                System.out.println("0. Sair");
-                System.out.print("Escolha uma opção: ");
+                logger.log(System.Logger.Level.INFO, "--- Menu Principal ---");
+                logger.log(System.Logger.Level.INFO, "1. Login");
+                logger.log(System.Logger.Level.INFO, "0. Sair");
+                logger.log(System.Logger.Level.INFO, "Escolha uma opção: ");
+                
                 int opcao = inputHandler.readIntInput();
 
                 switch (opcao) {
@@ -86,10 +89,10 @@ public class Main {
                         fazerLogin();
                         break;
                     case 0:
-                        System.out.println("Saindo...");
+                        logger.log(System.Logger.Level.INFO, "Saindo...");
                         return;
                     default:
-                        System.out.println("Opção inválida. Tente novamente.");
+                        logger.log(System.Logger.Level.WARNING, "Opção inválida. Tente novamente.");
                 }
             } else {
                 secaoTreinoUI = new SecaoTreinoUI(secaoTreinoBusiness, planoDeTreinoBusiness, inputHandler, usuarioLogado.getId());
@@ -105,27 +108,30 @@ public class Main {
     }
 
     private static void fazerLogin() {
-        System.out.print("Login: ");
+        System.Logger logger = System.getLogger(Main.class.getName());
+        logger.log(System.Logger.Level.INFO, "Login: ");
         String login = inputHandler.readLine();
-        System.out.print("Senha: ");
+        logger.log(System.Logger.Level.INFO, "Senha: ");
         String senha = inputHandler.readLine();
 
         Usuario usuario = usuarioBusiness.autenticarUsuario(login, senha);
         if (usuario != null) {
             usuarioLogado = usuario;
-            System.out.println("Login realizado com sucesso! Bem-vindo, " + usuarioLogado.getNome() + "!");
+            logger.log(System.Logger.Level.INFO, "Login realizado com sucesso! Bem-vindo, " + usuarioLogado.getNome() + "!");
         } else {
-            System.out.println("Login ou senha inválidos.");
+            logger.log(System.Logger.Level.WARNING, "Login ou senha inválidos.");
         }
     }
 
     private static void exibirMenuAdmin() {
+        System.Logger logger = System.getLogger(Main.class.getName());
         while (true) {
-            System.out.println("\n--- Menu Administrador ---");
-            System.out.println("1. Gerenciar Usuários");
-            System.out.println("2. Gerenciar Exercícios");
-            System.out.println("0. Logout");
-            System.out.print("Escolha uma opção: ");
+            logger.log(System.Logger.Level.INFO, "--- Menu Administrador ---");
+            logger.log(System.Logger.Level.INFO, "1. Gerenciar Usuários");
+            logger.log(System.Logger.Level.INFO, "2. Gerenciar Exercícios");
+            logger.log(System.Logger.Level.INFO, "0. Logout");
+            logger.log(System.Logger.Level.INFO, "Escolha uma opção: ");
+
             int opcao = inputHandler.readIntInput();
 
             switch (opcao) {
@@ -137,22 +143,23 @@ public class Main {
                     break;
                 case 0:
                     usuarioLogado = null;
-                    System.out.println("Logout realizado.");
+                    logger.log(System.Logger.Level.INFO, "Logout realizado.");
                     return;
                 default:
-                    System.out.println("Opção inválida. Tente novamente.");
+                    logger.log(System.Logger.Level.WARNING, "Opção inválida. Tente novamente.");
             }
         }
     }
 
     private static void exibirMenuUsuario() {
+        System.Logger logger = System.getLogger(Main.class.getName());
         while (true) {
-            System.out.println("\n--- Menu Usuário ---");
-            System.out.println("1. Gerenciar Planos de Treino");
-            System.out.println("2. Gerenciar Seções de Treino");
-            System.out.println("3. Gerenciar Indicadores Biomédicos");
-            System.out.println("0. Logout");
-            System.out.print("Escolha uma opção: ");
+            logger.log(System.Logger.Level.INFO, "--- Menu Usuário ---");
+            logger.log(System.Logger.Level.INFO, "1. Gerenciar Planos de Treino");
+            logger.log(System.Logger.Level.INFO, "2. Gerenciar Seções de Treino");
+            logger.log(System.Logger.Level.INFO, "3. Gerenciar Indicadores Biomédicos");
+            logger.log(System.Logger.Level.INFO, "0. Logout");
+            logger.log(System.Logger.Level.INFO, "Escolha uma opção: ");
             int opcao = inputHandler.readIntInput();
 
             switch (opcao) {
@@ -167,10 +174,10 @@ public class Main {
                     break;
                 case 0:
                     usuarioLogado = null;
-                    System.out.println("Logout realizado.");
+                    logger.log(System.Logger.Level.INFO, "Logout realizado.");
                     return;
                 default:
-                    System.out.println("Opção inválida. Tente novamente.");
+                    logger.log(System.Logger.Level.WARNING, "Opção inválida. Tente novamente.");
             }
         }
     }
